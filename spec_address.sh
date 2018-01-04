@@ -6,7 +6,7 @@ do
 	address=
 	count=0
 	echo 0 > 'done'
-	while ! [[ "$(echo $address | egrep '0x000.{33}(0)\1{2}[b]')" ]] && [[ "$(cat done)" -eq 0 ]] 2>/dev/null; do 
+	while ! [[ "$(echo $address | egrep ${2:-'0x000.{33}(0)\1{2}.'})" ]] && [[ "$(cat done)" -eq 0 ]] 2>/dev/null; do 
 		count=$(( count + 1 ))
 		resultjson="$(curl --data '{"method":"parity_generateSecretPhrase","params":[],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:${1:-8545} 2>/dev/null)"
 		export phrase="$(echo $resultjson|jshon -e result -u)"
